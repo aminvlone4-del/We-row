@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#121412">
+<title>We Row</title>
+<style>
+:root{--bg:#121412;--card:#1b1e1b;--card2:#232723;--line:#2c322c;--tx:#eef2ee;--mut:#8c978c;--g:#3ddc84;--gd:#1f7a47;--red:#ff6b6b;--amb:#ffbf47}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,system-ui,sans-serif;font-size:16px;line-height:1.6}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0}
+#app{max-width:720px;margin:0 auto;padding:0 14px 90px}
+.top{display:flex;align-items:center;gap:10px;padding:14px 0;position:sticky;top:0;background:var(--bg);z-index:5}
+.top h1{font-size:18px;margin:0;flex:1}
+.ib{background:var(--card);border:1px solid var(--line);border-radius:12px;min-width:44px;height:44px;padding:0 12px}
+.banner{background:#2a2410;border:1px solid #5c4a14;color:var(--amb);border-radius:12px;padding:8px 12px;font-size:13px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.row{display:flex;align-items:center;gap:10px}
+.sp{flex:1}
+.mut{color:var(--mut);font-size:13px}
+.btn{background:var(--card2);border:1px solid var(--line);border-radius:14px;min-height:50px;padding:0 16px;font-weight:bold;width:100%}
+.btn.pri{background:var(--g);color:#06210f;border-color:var(--g)}
+.btn.dng{background:transparent;color:var(--red);border-color:#5a2a2a}
+.btn:disabled{opacity:.4}
+.grid{display:grid;gap:10px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.logo{text-align:center;margin:60px 0 24px}
+.logo b{display:inline-block;font-size:34px;letter-spacing:1px}
+.logo b i{color:var(--g);font-style:normal}
+input,select,textarea{background:var(--card2);border:1px solid var(--line);border-radius:12px;height:48px;padding:0 12px;width:100%}
+textarea{height:auto;padding:10px 12px;resize:none;display:block}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--g);padding:0}
+label{display:block;margin:10px 0 4px;color:var(--mut);font-size:13px}
+.dash{display:block;text-align:right;padding:20px;border-radius:18px;background:var(--card);border:1px solid var(--line);width:100%;margin-bottom:12px}
+.dash b{font-size:18px}
+.dash .mut{display:block}
+.kpi b{display:block;font-size:20px;color:var(--g)}
+.tbl{border-radius:16px;padding:16px 8px;text-align:center;border:1px solid var(--line);background:var(--card)}
+.tbl b{font-size:20px;display:block}
+.tbl.busy{border-color:var(--g);background:#14241a}
+.tbl.wait{border-color:var(--amb);background:#2a2410}
+.tag{font-size:12px;display:inline-block;margin-top:4px;padding:2px 8px;border-radius:99px;background:var(--card2);color:var(--mut)}
+.busy .tag{background:var(--gd);color:#fff}
+.wait .tag{background:#7a5a10;color:#fff}
+.line{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.line:last-child{border-bottom:0}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:38px;height:38px;border-radius:10px;background:var(--card2);border:1px solid var(--line);font-size:20px}
+.new{border-right:3px solid var(--g);padding-right:8px}
+.total{font-size:20px;font-weight:bold;color:var(--g)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.chip{white-space:nowrap;background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:8px 14px}
+.chip.on{background:var(--g);color:#06210f;border-color:var(--g);font-weight:bold}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.sheet{background:var(--bg);width:100%;max-width:720px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:16px;border:1px solid var(--line)}
+.prod{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:right;min-height:84px}
+.prod b{display:block}
+.prod span{color:var(--g);font-size:14px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:150px;direction:ltr}
+.bars div{flex:1;background:var(--g);border-radius:4px 4px 0 0;min-height:2px}
+.lbls{display:flex;gap:3px;direction:ltr;font-size:10px;color:var(--mut);margin-top:4px}
+.lbls span{flex:1;text-align:center;overflow:hidden;white-space:nowrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--g);color:#06210f;padding:10px 18px;border-radius:99px;font-weight:bold;z-index:50}
+.inv{background:#fff;color:#111;border-radius:12px;padding:16px;font-size:13px;line-height:1.7}
+.inv h2{text-align:center;margin:0 0 2px;font-size:20px}
+.inv .c{text-align:center}
+.inv .sub{font-size:12px;color:#444}
+.inv .hr{border-top:1px dashed #000;margin:8px 0}
+.inv table{width:100%;border-collapse:collapse;margin-top:8px}
+.inv th{font-size:11px;border-bottom:1px solid #000;padding:3px 0;text-align:right}
+.inv td{padding:4px 0;border-bottom:1px dashed #bbb;text-align:right;vertical-align:top}
+.inv th.n,.inv td.n{text-align:left;white-space:nowrap;padding-right:6px}
+.inv .tot{display:flex;justify-content:space-between;border-top:2px solid #000;margin-top:8px;padding-top:6px;font-size:16px}
+.inv .foot{text-align:center;margin-top:10px;font-size:12px;border-top:1px dashed #000;padding-top:8px}
+#printArea{display:none}
+@media print{
+  body{background:#fff;color:#000}
+  #app,.modal,.toast{display:none!important}
+  #printArea{display:block;font-family:Tahoma,sans-serif;width:72mm;margin:0 auto}
+  #printArea .inv{border-radius:0;padding:0}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="printArea"></div>
+<script>
+const KEY='werow_proto_v2',SKEY='werow_session_v2';
+function hp(str){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<str.length;i++){const ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(2097151&h2)+(h1>>>0)).toString(36)}
+const fmt=n=>Number(n).toLocaleString('fa-IR');
+const money=n=>fmt(n)+' تومان';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function rng(seed){return()=>(seed=(seed*16807)%2147483647)/2147483647}
+
+function fresh(){
+  const cats=['چای و دمنوش','قهوه و نوشیدنی گرم','نوشیدنی سرد','شیک','غذا و فست‌فود','قلیان','سایر محصولات'];
+  const DC={1:12000,2:30000,3:30000,4:45000,5:50000,6:35000,7:30000,8:80000,9:90000,10:120000,11:110000,12:8000};
+  const P=(id,name,cat,price)=>({id,name,cat,price,cost:DC[id],active:true});
+  const products=[
+    P(1,'چای ساده',cats[0],40000),P(2,'دمنوش به‌لیمو',cats[0],85000),
+    P(3,'اسپرسو',cats[1],90000),P(4,'کاپوچینو',cats[1],130000),P(5,'لاته',cats[1],140000),
+    P(6,'لیموناد',cats[2],110000),P(7,'آیس‌تی',cats[2],100000),
+    P(8,'شیک نوتلا',cats[3],180000),
+    P(9,'ساندویچ مرغ',cats[4],190000),P(10,'پیتزا مخصوص',cats[4],260000),
+    P(11,'قلیان دو سیب',cats[5],250000),P(12,'آب معدنی',cats[6],20000)
+  ];
+  const tables={};
+  for(let i=1;i<=8;i++)tables[i]={saved:[],draft:[],awaiting:false,batch:0};
+  return {v:2,cats,products,tables,sales:demoSales(products),nextPid:100,costOn:true,
+    admin:{user:'admin',pass:hp('werow:123')},
+    invoice:{name:'We Row',sub:'',titleNew:'سفارش جدید',titleFinal:'صورت‌حساب نهایی',footer:'از انتخاب شما سپاسگزاریم',showTable:true,showDate:true,showUnit:true}};
+}
+function demoSales(products){
+  const r=rng(7),out=[],now=Date.now(),d0=new Date();d0.setHours(0,0,0,0);
+  for(let d=0;d<180;d++){
+    const n=6+Math.floor(r()*12);
+    for(let k=0;k<n;k++){
+      const ts=d0.getTime()-d*864e5+(10+Math.floor(r()*13))*36e5+Math.floor(r()*36e5);
+      if(ts>now)continue;
+      const items=[],m=1+Math.floor(r()*4);
+      for(let j=0;j<m;j++){
+        const p=products[Math.floor(r()*products.length)];
+        items.push({name:p.name,qty:1+Math.floor(r()*2),price:p.price,cost:p.cost});
+      }
+      out.push({ts,table:1+Math.floor(r()*8),total:items.reduce((s,i)=>s+i.qty*i.price,0),items,demo:true});
+    }
+  }
+  return out;
+}
+let S;
+try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):null}catch(e){S=null}
+if(!S||S.v!==2)S=fresh();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+let view='login',cur=null,sheet=false,sheetCat=null,modal=null,range=7,busy=false,logged=false;
+function getSess(){try{return JSON.parse(localStorage.getItem(SKEY))}catch(e){return null}}
+function setSess(){try{localStorage.setItem(SKEY,JSON.stringify({u:S.admin.user,p:S.admin.pass}))}catch(e){}}
+function clrSess(){try{localStorage.removeItem(SKEY)}catch(e){}}
+{const ss=getSess();if(ss&&ss.u===S.admin.user&&ss.p===S.admin.pass){logged=true;view='home'}}
+
+function toast(t){
+  const el=document.createElement('div');el.className='toast';el.textContent=t;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),1600);
+}
+function go(v,p){view=v;if(p!==undefined)cur=p;sheet=false;modal=null;render();window.scrollTo(0,0)}
+function status(t){
+  if(t.awaiting&&t.saved.length)return 'wait';
+  if(t.saved.length)return 'busy';
+  return 'free';
+}
+const STATUS_TXT={free:'آزاد',busy:'دارای سفارش',wait:'در انتظار تسویه'};
+const sum=a=>a.reduce((s,i)=>s+i.qty*i.price,0);
+
+function header(title,back){
+  return `<div class="top">${back?`<button class="ib" onclick="go('${back}')">→</button>`:''}<h1>${title}</h1>${logged?`<button class="ib" onclick="logout()">خروج</button>`:''}</div>`;
+}
+function logout(){logged=false;clrSess();go('login')}
+function doLogin(ev){
+  ev.preventDefault();
+  const u=document.getElementById('u').value.trim(),p=document.getElementById('p').value;
+  if(u.toLowerCase()===S.admin.user.toLowerCase()&&hp('werow:'+p)===S.admin.pass){
+    try{localStorage.setItem('werow_lastuser',u)}catch(err){}
+    if(document.getElementById('rm').checked)setSess();else clrSess();
+    logged=true;go('home');
+  }else toast('نام کاربری یا رمز اشتباه است');
+}
+
+function vLogin(){
+  let lu='';try{lu=localStorage.getItem('werow_lastuser')||''}catch(e){}
+  return `<div class="logo"><b>We <i>Row</i></b></div>
+  <form class="card" onsubmit="doLogin(event)" autocomplete="on">
+    <label>نام کاربری</label><input id="u" name="username" autocomplete="username" autocapitalize="none" value="${esc(lu)}">
+    <label>رمز عبور</label><input id="p" name="password" type="password" autocomplete="current-password">
+    <label class="row" style="margin:14px 0;color:var(--tx);font-size:15px"><input id="rm" type="checkbox" checked><span>مرا به خاطر بسپار</span></label>
+    <button class="btn pri" type="submit">ورود</button>
+  </form>
+  <div class="mut" style="text-align:center;margin-top:40px">سازنده: TH1</div>`;
+}
+function vHome(){
+  const d=new Date();
+  const start=new Date();start.setHours(0,0,0,0);
+  const today=S.sales.filter(s=>s.ts>=start.getTime());
+  const busyCount=Object.values(S.tables).filter(t=>t.saved.length).length;
+  return header('We Row')+`<div class="mut" style="margin-bottom:12px">${d.toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</div>
+  <div class="grid g2" style="margin-bottom:12px">
+    <div class="card kpi"><span class="mut">فروش امروز</span><b>${money(sum2(today))}</b></div>
+    <div class="card kpi"><span class="mut">میز دارای سفارش</span><b>${fmt(busyCount)} از ${fmt(8)}</b></div>
+  </div>
+  <button class="dash" onclick="go('tables')"><b>🧾 ثبت سفارش</b></button>
+  <button class="dash" onclick="go('sales')"><b>📊 بررسی فروش</b></button>
+  <button class="dash" onclick="go('settings')"><b>⚙️ تنظیمات</b></button>`;
+}
+const sum2=a=>a.reduce((s,i)=>s+i.total,0);
+
+function vTables(){
+  let h=header('انتخاب میز','home')+'<div class="grid g2">';
+  for(let i=1;i<=8;i++){
+    const t=S.tables[i],st=status(t);
+    h+=`<button class="tbl ${st}" onclick="go('order',${i})"><b>میز ${fmt(i)}</b><span class="tag">${STATUS_TXT[st]}</span>${t.saved.length?`<div class="mut">${money(sum(t.saved))}</div>`:''}</button>`;
+  }
+  return h+'</div>';
+}
+
+function vOrder(){
+  const t=S.tables[cur],st=status(t);
+  const total=sum(t.saved)+sum(t.draft);
+  let h=header(`میز ${fmt(cur)}`,'tables');
+  h+=`<div class="row" style="margin-bottom:10px"><span class="tag">${STATUS_TXT[st]}</span><span class="sp"></span><span class="mut">جمع: <span class="total">${money(total)}</span></span></div>`;
+  if(t.saved.length){
+    h+='<div class="card"><b>سفارش‌های ثبت‌شده</b>';
+    const batches={};
+    t.saved.forEach(i=>{(batches[i.batch]=batches[i.batch]||[]).push(i)});
+    Object.keys(batches).forEach(b=>{
+      const ts=new Date(batches[b][0].ts).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+      h+=`<div class="mut" style="margin-top:8px">مرحله ${fmt(b)} — ساعت ${ts}</div>`;
+      batches[b].forEach(i=>{
+        h+=`<div class="line"><div class="sp">${esc(i.name)}<div class="mut">${fmt(i.qty)} × ${money(i.price)}</div></div><b>${money(i.qty*i.price)}</b></div>`;
+      });
+    });
+    h+='</div>';
+  }
+  h+='<div class="card"><b>اقلام جدید (ثبت‌نشده)</b>';
+  if(!t.draft.length)h+='<div class="mut" style="padding:10px 0">هنوز محصولی اضافه نشده است.</div>';
+  t.draft.forEach((i,idx)=>{
+    h+=`<div class="line new"><div class="sp">${esc(i.name)}<div class="mut">${money(i.price)}</div></div>
+    <div class="qty"><button onclick="chg(${idx},-1)">−</button><b>${fmt(i.qty)}</b><button onclick="chg(${idx},1)">+</button></div>
+    <b style="min-width:90px;text-align:left">${money(i.qty*i.price)}</b>
+    <button class="ib" style="min-width:38px;height:38px;color:var(--red)" onclick="rm(${idx})">✕</button></div>`;
+  });
+  h+='</div>';
+  h+=`<div class="grid" style="gap:10px">
+    <button class="btn" onclick="sheet=true;sheetCat=null;render()">+ افزودن محصول</button>
+    <div class="grid g2"><button class="btn pri" onclick="submit(false)">ثبت سفارش</button><button class="btn pri" onclick="submit(true)">ثبت و چاپ</button></div>
+    <button class="btn" onclick="openSettle()">تسویه میز</button>
+  </div>`;
+  return h;
+}
+function chg(idx,d){
+  const t=S.tables[cur];t.draft[idx].qty+=d;
+  if(t.draft[idx].qty<=0)t.draft.splice(idx,1);
+  save();render();
+}
+function rm(idx){S.tables[cur].draft.splice(idx,1);save();render()}
+function addProd(id){
+  const p=S.products.find(x=>x.id===id),t=S.tables[cur];
+  const ex=t.draft.find(i=>i.pid===id);
+  if(ex)ex.qty++;else t.draft.push({pid:id,name:p.name,price:p.price,cost:p.cost==null?null:p.cost,qty:1});
+  save();render();toast('افزوده شد');
+}
+function vSheet(){
+  const cat=sheetCat;
+  const list=S.products.filter(p=>p.active&&(!cat||p.cat===cat));
+  let h=`<div class="modal" onclick="if(event.target===this){sheet=false;render()}"><div class="sheet">
+  <div class="row" style="margin-bottom:10px"><b class="sp">افزودن محصول</b><button class="ib" onclick="sheet=false;render()">بستن</button></div>
+  <div class="chips"><button class="chip ${!cat?'on':''}" onclick="sheetCat=null;render()">همه</button>`;
+  S.cats.forEach((c,i)=>{h+=`<button class="chip ${cat===c?'on':''}" onclick="sheetCat=S.cats[${i}];render()">${esc(c)}</button>`});
+  h+='</div><div class="grid g2">';
+  list.forEach(p=>{h+=`<button class="prod" onclick="addProd(${p.id})"><b>${esc(p.name)}</b><div class="mut">${esc(p.cat)}</div><span>${money(p.price)}</span></button>`});
+  if(!list.length)h+='<div class="mut">محصولی در این دسته نیست.</div>';
+  return h+'</div></div></div>';
+}
+function submit(print){
+  if(busy)return;
+  const t=S.tables[cur];
+  if(!t.draft.length){toast('اقلام جدیدی اضافه نشده');return}
+  busy=true;
+  t.batch=(t.batch||0)+1;
+  const ts=Date.now(),items=t.draft.map(d=>({...d,batch:t.batch,ts}));
+  t.saved.push(...items);t.draft=[];t.awaiting=false;
+  save();busy=false;
+  render();
+  if(print)printDoc(S.invoice.titleNew,cur,items);else toast('سفارش ثبت شد');
+}
+const SAMPLE=[{name:'چای ساده',qty:2,price:40000},{name:'شیک نوتلا',qty:1,price:180000},{name:'قلیان دو سیب',qty:1,price:250000}];
+function invHTML(title,table,items){
+  const I=S.invoice,d=new Date();
+  let h=`<div class="inv"><h2>${esc(I.name)}</h2>`;
+  if(I.sub)h+=`<div class="c sub">${esc(I.sub).replace(/\n/g,'<br>')}</div>`;
+  h+=`<div class="hr"></div><div class="c"><b>${esc(title)}</b>${I.showTable&&table?` — میز ${fmt(table)}`:''}</div>`;
+  if(I.showDate)h+=`<div class="c sub">${d.toLocaleDateString('fa-IR')} — ${d.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</div>`;
+  h+=`<table><tr><th>محصول</th><th class="n">تعداد</th>${I.showUnit?'<th class="n">قیمت</th>':''}<th class="n">مبلغ</th></tr>`;
+  items.forEach(i=>{h+=`<tr><td>${esc(i.name)}</td><td class="n">${fmt(i.qty)}</td>${I.showUnit?`<td class="n">${fmt(i.price)}</td>`:''}<td class="n">${fmt(i.qty*i.price)}</td></tr>`});
+  h+=`</table><div class="tot"><span>جمع کل</span><b>${money(sum(items))}</b></div>`;
+  if(I.footer)h+=`<div class="foot">${esc(I.footer).replace(/\n/g,'<br>')}</div>`;
+  return h+'</div>';
+}
+function printDoc(title,table,items){
+  document.getElementById('printArea').innerHTML=invHTML(title,table,items);
+  setTimeout(()=>window.print(),80);
+}
+function openSettle(){
+  const t=S.tables[cur];
+  if(t.draft.length){toast('اول اقلام جدید را ثبت کن');return}
+  if(!t.saved.length){toast('این میز سفارشی ندارد');return}
+  modal='settle';render();
+}
+function vSettle(){
+  const t=S.tables[cur];
+  return `<div class="modal"><div class="sheet">
+  <b>صورت‌حساب میز ${fmt(cur)}</b>
+  <div style="margin:10px 0">${t.saved.map(i=>`<div class="line"><div class="sp">${esc(i.name)}<div class="mut">${fmt(i.qty)} × ${money(i.price)}</div></div><b>${money(i.qty*i.price)}</b></div>`).join('')}</div>
+  <div class="row" style="margin-bottom:14px"><b class="sp">مبلغ کل</b><span class="total">${money(sum(t.saved))}</span></div>
+  <div class="grid" style="gap:10px">
+    <button class="btn" onclick="printBill()">چاپ صورت‌حساب</button>
+    <button class="btn pri" onclick="settle()">تأیید تسویه</button>
+    <button class="btn" onclick="modal=null;render()">انصراف</button>
+  </div></div></div>`;
+}
+function printBill(){
+  const t=S.tables[cur];t.awaiting=true;save();
+  printDoc(S.invoice.titleFinal,cur,t.saved);
+}
+function settle(){
+  const t=S.tables[cur];
+  if(!t.saved.length)return;
+  const map={};
+  t.saved.forEach(i=>{const k=i.name+'|'+i.price+'|'+i.cost;map[k]=map[k]||{name:i.name,price:i.price,cost:i.cost==null?null:i.cost,qty:0};map[k].qty+=i.qty});
+  S.sales.push({ts:Date.now(),table:cur,total:sum(t.saved),items:Object.values(map)});
+  S.tables[cur]={saved:[],draft:[],awaiting:false,batch:0};
+  save();modal=null;toast('میز تسویه شد');go('tables');
+}
+
+function vSales(){
+  const now=Date.now(),d0=new Date();d0.setHours(0,0,0,0);
+  const startToday=d0.getTime();
+  const from=startToday-(range-1)*864e5;
+  const rows=S.sales.filter(s=>s.ts>=from);
+  const total=sum2(rows),cnt=rows.length,avg=cnt?Math.round(total/cnt):0;
+  let n,idxOf,label;
+  if(range===1){n=24;idxOf=s=>new Date(s.ts).getHours();label=i=>i%3===0?fmt(i):''}
+  else if(range<=30){
+    n=range;
+    idxOf=s=>{const dd=Math.floor((startToday-new Date(s.ts).setHours(0,0,0,0))/864e5);return n-1-dd};
+    label=i=>{const dt=new Date(startToday-(n-1-i)*864e5);return (n===7||i%5===0)?dt.toLocaleDateString('fa-IR',n===7?{weekday:'short'}:{day:'numeric'}):''};
+  }else{
+    n=Math.ceil(range/7);
+    idxOf=s=>{const dd=Math.floor((startToday-new Date(s.ts).setHours(0,0,0,0))/864e5);return Math.max(0,n-1-Math.floor(dd/7))};
+    label=i=>i%4===0?fmt(i+1):'';
+  }
+  const buckets=Array(n).fill(0);
+  rows.forEach(s=>{const i=idxOf(s);if(i>=0&&i<n)buckets[i]+=s.total});
+  const mx=Math.max(1,...buckets);
+  const prod={};let cost=0,cov=0,miss=0;
+  rows.forEach(s=>s.items.forEach(i=>{
+    const o=prod[i.name]||(prod[i.name]={q:0,p:0,h:false});o.q+=i.qty;
+    if(i.cost==null)miss+=i.qty;
+    else{o.p+=i.qty*(i.price-i.cost);o.h=true;cost+=i.qty*i.cost;cov+=i.qty*i.price}
+  }));
+  const top=Object.entries(prod).sort((a,b)=>b[1].q-a[1].q).slice(0,5);
+  let costH='';
+  if(S.costOn){
+    const profit=cov-cost,margin=cov?Math.round(profit/cov*100):0;
+    costH=cov>0?`<div class="grid g3" style="margin-bottom:12px">
+      <div class="card kpi" style="margin:0"><span class="mut">کاست کل</span><b style="font-size:14px">${money(cost)}</b></div>
+      <div class="card kpi" style="margin:0"><span class="mut">سود ناخالص</span><b style="font-size:14px">${money(profit)}</b></div>
+      <div class="card kpi" style="margin:0"><span class="mut">حاشیه سود</span><b>${fmt(margin)}٪</b></div></div>${miss>0?`<div class="mut" style="margin:-4px 0 12px">${fmt(miss)} قلم بدون کاست حساب نشد</div>`:''}`
+    :`<div class="card mut">کاست محصولات ثبت نشده است</div>`;
+  }
+  const R=[[1,'یک روز'],[7,'۷ روز'],[30,'یک ماه'],[90,'۳ ماه'],[180,'۶ ماه']];
+  let h=header('بررسی فروش','home');
+  h+='<div class="chips">'+R.map(r=>`<button class="chip ${range===r[0]?'on':''}" onclick="range=${r[0]};render()">${r[1]}</button>`).join('')+'</div>';
+  h+=`<div class="grid g3" style="margin:6px 0 12px">
+    <div class="card kpi"><span class="mut">مجموع فروش</span><b style="font-size:14px">${money(total)}</b></div>
+    <div class="card kpi"><span class="mut">تعداد سفارش</span><b>${fmt(cnt)}</b></div>
+    <div class="card kpi"><span class="mut">میانگین</span><b style="font-size:14px">${money(avg)}</b></div></div>`;
+  h+=costH;
+  h+=`<div class="card"><b>نمودار فروش</b><div style="height:10px"></div><div class="bars">${buckets.map(v=>`<div style="height:${Math.round(v/mx*100)}%"></div>`).join('')}</div>
+  <div class="lbls">${buckets.map((v,i)=>`<span>${label(i)}</span>`).join('')}</div></div>`;
+  h+='<div class="card"><b>محصولات پرفروش</b>';
+  if(!top.length)h+='<div class="mut">داده‌ای نیست.</div>';
+  top.forEach((t,i)=>{h+=`<div class="line"><span class="mut">${fmt(i+1)}</span><div class="sp">${esc(t[0])}${S.costOn&&t[1].h?`<div class="mut">سود: ${money(t[1].p)}</div>`:''}</div><b>${fmt(t[1].q)} عدد</b></div>`});
+  return h+'</div>';
+}
+
+function sw(label,key){return `<button class="chip ${S.invoice[key]?'on':''}" onclick="tglInv('${key}')">${label}</button>`}
+function vSettings(){
+  const I=S.invoice;
+  let h=header('تنظیمات','home');
+  h+=`<div class="card"><b>مدیریت محصولات</b>
+  <div class="row" style="margin:8px 0 2px"><span class="sp">کاست آیتم‌ها (اختیاری)</span><button class="chip ${S.costOn?'on':''}" onclick="tglCost()">${S.costOn?'روشن':'خاموش'}</button></div>`;
+  S.products.forEach(p=>{
+    h+=`<div class="line" style="flex-wrap:wrap"><div class="sp" style="min-width:120px;${p.active?'':'opacity:.4'}">${esc(p.name)}<div class="mut">${esc(p.cat)}</div></div>
+    <input type="number" inputmode="numeric" placeholder="قیمت" value="${p.price}" style="width:100px" onchange="setPrice(${p.id},this.value)">
+    ${S.costOn?`<input type="number" inputmode="numeric" placeholder="کاست" value="${p.cost==null?'':p.cost}" style="width:100px" onchange="setCost(${p.id},this.value)">`:''}
+    <button class="ib" onclick="toggleP(${p.id})">${p.active?'فعال':'غیرفعال'}</button></div>`;
+  });
+  h+='</div>';
+  h+=`<div class="card"><b>افزودن محصول</b>
+  <label>نام</label><input id="np">
+  <label>دسته‌بندی</label><select id="nc">${S.cats.map(c=>`<option>${esc(c)}</option>`).join('')}</select>
+  <label>قیمت (تومان)</label><input id="nq" type="number" inputmode="numeric">
+  ${S.costOn?`<label>کاست (تومان، اختیاری)</label><input id="nk" type="number" inputmode="numeric">`:''}
+  <div style="height:12px"></div><button class="btn pri" onclick="addNew()">افزودن</button></div>`;
+  h+=`<div class="card"><b>فاکتور</b>
+  <label>نام بالای فاکتور</label><input value="${esc(I.name)}" onchange="setInv('name',this.value)">
+  <label>آدرس / تلفن</label><textarea rows="2" onchange="setInv('sub',this.value)">${esc(I.sub)}</textarea>
+  <label>عنوان فاکتور سفارش جدید</label><input value="${esc(I.titleNew)}" onchange="setInv('titleNew',this.value)">
+  <label>عنوان صورت‌حساب نهایی</label><input value="${esc(I.titleFinal)}" onchange="setInv('titleFinal',this.value)">
+  <label>متن پایین فاکتور</label><textarea rows="2" onchange="setInv('footer',this.value)">${esc(I.footer)}</textarea>
+  <div class="chips" style="margin-top:12px">${sw('شماره میز','showTable')}${sw('تاریخ و ساعت','showDate')}${sw('قیمت واحد','showUnit')}</div>
+  <div style="margin-top:6px">${invHTML(I.titleFinal,3,SAMPLE)}</div></div>`;
+  h+=`<div class="card"><b>حساب مدیر</b>
+  <label>نام کاربری</label><input id="au" value="${esc(S.admin.user)}" autocomplete="off" autocapitalize="none">
+  <label>رمز فعلی</label><input id="ap0" type="password" autocomplete="off">
+  <label>رمز جدید (اختیاری)</label><input id="ap1" type="password" autocomplete="new-password">
+  <label>تکرار رمز جدید</label><input id="ap2" type="password" autocomplete="new-password">
+  <div style="height:12px"></div><button class="btn pri" onclick="saveAdmin()">ذخیره</button></div>`;
+  h+=`<div class="card"><b>تنظیمات عمومی</b><div class="mut">واحد پول: تومان</div>
+  <div style="height:10px"></div><button class="btn dng" onclick="resetAll()">بازگردانی داده‌های آزمایشی</button></div>`;
+  return h;
+}
+function setPrice(id,v){const p=S.products.find(x=>x.id===id);const n=parseInt(v,10);if(n>=0){p.price=n;save();toast('قیمت تغییر کرد')}}
+function setCost(id,v){
+  const p=S.products.find(x=>x.id===id);
+  if(String(v).trim()===''){p.cost=null;save();toast('کاست حذف شد');return}
+  const n=parseInt(v,10);if(n>=0){p.cost=n;save();toast('کاست تغییر کرد')}
+}
+function toggleP(id){const p=S.products.find(x=>x.id===id);p.active=!p.active;save();render()}
+function tglCost(){S.costOn=!S.costOn;save();render()}
+function tglInv(k){S.invoice[k]=!S.invoice[k];save();render()}
+function setInv(k,v){S.invoice[k]=v.trim();save();render();toast('ذخیره شد')}
+function saveAdmin(){
+  const g=id=>document.getElementById(id).value;
+  const u=g('au').trim(),p0=g('ap0'),p1=g('ap1'),p2=g('ap2');
+  if(hp('werow:'+p0)!==S.admin.pass){toast('رمز فعلی اشتباه است');return}
+  if(u.length<3||/\s/.test(u)){toast('نام کاربری حداقل ۳ حرف و بدون فاصله باشد');return}
+  if(p1||p2){
+    if(p1.length<4){toast('رمز جدید حداقل ۴ کاراکتر باشد');return}
+    if(p1!==p2){toast('تکرار رمز یکی نیست');return}
+    S.admin.pass=hp('werow:'+p1);
+  }
+  S.admin.user=u;save();
+  if(getSess())setSess();
+  try{localStorage.setItem('werow_lastuser',u)}catch(e){}
+  render();toast('اطلاعات مدیر ذخیره شد');
+}
+function addNew(){
+  const name=document.getElementById('np').value.trim(),cat=document.getElementById('nc').value,price=parseInt(document.getElementById('nq').value,10);
+  const kEl=document.getElementById('nk'),cost=kEl&&kEl.value!==''?parseInt(kEl.value,10):null;
+  if(!name||!(price>=0)||(cost!==null&&!(cost>=0))){toast('نام و قیمت را درست وارد کن');return}
+  S.products.push({id:S.nextPid++,name,cat,price,cost,active:true});save();render();toast('محصول افزوده شد');
+}
+function resetAll(){
+  if(confirm('همه داده‌های آزمایشی به حالت اول برگردد؟')){
+    const a=S.admin,i=S.invoice,c=S.costOn;S=fresh();S.admin=a;S.invoice=i;S.costOn=c;save();go('home');
+  }
+}
+
+function render(){
+  const y=window.scrollY;
+  let h='';
+  if(!logged&&view!=='login')view='login';
+  if(view==='login')h=vLogin();
+  else if(view==='home')h=vHome();
+  else if(view==='tables')h=vTables();
+  else if(view==='order')h=vOrder();
+  else if(view==='sales')h=vSales();
+  else if(view==='settings')h=vSettings();
+  if(view==='order'&&sheet)h+=vSheet();
+  if(view==='order'&&modal==='settle')h+=vSettle();
+  document.getElementById('app').innerHTML=h;
+  window.scrollTo(0,y);
+}
+render();
+</script>
+</body>
+</html>
